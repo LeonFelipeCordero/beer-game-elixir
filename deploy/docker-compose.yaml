@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: beer_game
+      MYSQL_USER: beer_game
+      MYSQL_PASSWORD: 12345
+
+  beer-game:
+    image: elixir/beer-game
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_completed_successfully
+    environment:
+      MIX_ENV: prod
+      DATABASE_URL: ecto://beer_gmae:12345@db/beer_game

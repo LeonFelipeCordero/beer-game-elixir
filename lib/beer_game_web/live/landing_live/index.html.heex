@@ -1,0 +1,24 @@
+<div class="h-screen grid place-content-center">
+  <div class="w-full max-w-xs">
+    <form phx-submit="join_board" class="bg-slate-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700 text-xl font-bold mb-2">Board name.</label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text" name="name" value={@name} placeholder="e.g. team-AB" autofocus
+          autocomplete="off" />
+      </div>
+      <div>
+        <input
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit" value="Join Board" />
+
+        <%= link "New Board" , to: Routes.board_new_path(@socket, :new),
+          class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+      </div>
+
+      <div class="">
+      </div>
+    </form>
+  </div>
+</div>

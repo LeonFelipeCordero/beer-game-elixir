@@ -1,0 +1,123 @@
+<div class="h-screen">
+  <div class="flex justify-between p-5">
+    <div class="bg-slate-100 shadow-md rounded p-2 mr-5 w-full">
+      <div class="mb-4">
+          <div>
+            <strong class="text-4xl ">
+              Board <%= @board.name %>
+            </strong>
+            <p>
+              Role <%= @player.role %>
+            </p>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            phx-click="abandon_game">
+              Quit Game
+            </button>
+          </div>
+          <div class="mt-5">
+            <strong>Current status</strong>
+            <table class="border-separate border border-slate-500 table-fixed w-full">
+              <thead>
+                <tr>
+                  <th class="border border-slate-600">Stock</th>
+                  <th class="border border-slate-600">Last week</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <%= if @player.stock > 10 do %>
+                    <td class="border border-slate-700"><%= @player.stock %></td>
+                  <% else %>
+                    <td class="border border-slate-700 text-red-600 font-bold"><%= @player.stock %></td>
+                  <% end %>
+                  <td class="border border-slate-700"><%= @player.lastOrder %></td>
+                </tr>
+              </tbody>
+            </table>
+            <form phx-submit="create_order" class="flex flex-col mt-5">
+              <%= if @player.role == "factory" do%>
+                <label for="amount" class="text-gray-700 text-m font-bold mb-2">Weekly production</label>
+              <% end %>
+              <%= if @player.role != "factory" do%>
+                <label for="amount" class="text-gray-700 text-m font-bold mb-2">Weekly order</label>
+              <% end %>
+              <input class="border rounded p-2 text-gray-700"
+                    type="number" name="amount" value={@player.weeklyOrders} />
+              <%= if @player.role != "factory" and @order_time do %>
+                  <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded mt-2"
+                     type="submit" value="order" />
+              <% end %>
+             </form>
+        </div>
+      </div>
+    </div>
+    <div class="bg-slate-100 shadow-md rounded p-2 mr-5 w-full">
+      <strong class="text-xl">
+        Incoming.
+      </strong>
+      <table class="border-separate border border-slate-500 table-fixed w-full">
+        <thead>
+          <tr>
+            <th class="border border-slate-600">#</th>
+            <th class="border border-slate-600">Quantity</th>
+            <th class="border border-slate-600">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for order <- @receiving_orders do %>
+            <tr>
+              <td class="border border-slate-700"><%= order.id %></td>
+              <td class="border border-slate-700"><%= order.amount %></td>
+              <td class="border border-slate-700"><%= order.state %></td>
+            </tr> 
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-slate-100 shadow-md rounded p-2 w-full">
+      <strong class="text-xl">
+        Outgoing
+      </strong>
+      <div class="divide-y-4">
+        <table class="border-separate border border-slate-500 table-fixed w-full">
+          <thead>
+            <tr>
+              <th class="border border-slate-600">#</th>
+              <th class="border border-slate-600">Quantity</th>
+              <th class="border border-slate-600">Status</th>
+              <th class="border border-slate-600">Action</th>
+             </tr>
+          </thead>
+          <tbody>
+            <%= for order <- @sending_orders do %>
+              <tr>
+                <td class="border border-slate-700"><%= order.id %></td>
+                <td class="border border-slate-700"><%= order.amount %></td>
+                <td class="border border-slate-700"><%= order.state %></td>
+                <%= if order.state == "PENDING" do %>
+                  <td class="border border-slate-600">
+                    <%= if @player.stock >= order.amount do %>
+                      <button class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 
+                          rounded focus:outline-none focus:shadow-outline w-full"
+                          phx-click="deliver_order" phx-value-order_id={order.id}>
+                         deliver
+                      </button>
+                    <% else %>
+                        <button disabled class="bg-gray-600 text-white py-1 px-2 
+                          rounded focus:outline-none focus:shadow-outline w-full">
+                         No Stock
+                        </button>
+                    <% end %>
+                  </td>
+                <% end %>
+                <%= if order.state != "PENDING" do %>
+                  <td class="border border-slate-600">N/A</td>
+                <% end %>
+              </tr> 
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>  
+</div>
