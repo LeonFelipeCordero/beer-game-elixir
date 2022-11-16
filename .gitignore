@@ -32,3 +32,5 @@ beer_game-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.idea/
+.fleet/
