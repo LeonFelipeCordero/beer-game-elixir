@@ -4,8 +4,9 @@ defmodule BeerGameWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug BeerGameWeb.LiveSession
     plug :fetch_live_flash
-    plug :put_root_layout, {BeerGameWeb.LayoutView, :root}
+    plug :put_root_layout, html: {BeerGameWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -18,14 +19,6 @@ defmodule BeerGameWeb.Router do
     pipe_through :browser
 
     live "/", LandingLive.Index, :index
-
-    live "/session", SessionLive.Index, :index
-    live "/session/new", SessionLive.New, :new
-    live "/session/:id", SessionLive.Show, :show
-
-    live "/player", PlayerLive.Index, :index
-    live "/player/new", PlayerLive.Index, :new
-    live "/player/:id", PlayerLive.Show, :show
 
     live "/board", BoardLive.Index, :index
     live "/board/new", BoardLive.New, :new

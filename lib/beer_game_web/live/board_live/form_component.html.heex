@@ -1,16 +1,30 @@
 <div>
-  <form phx-submit="create_board" class="bg-slate-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-
+  <.form
+    for={@form}
+    id="board-form"
+    phx-submit="create_board"
+    class="bg-slate-100 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+  >
     <div class="mb-4">
       <label for="name" class="block text-gray-700 text-xl font-bold mb-2">Board name.</label>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="text" name="name" value={@name} placeholder="e.g. team-AB" autofocus autocomplete="off" />
+        type="text"
+        name="name"
+        id="name"
+        value={@form[:name].value}
+        placeholder="e.g. team-AB"
+        autofocus
+        autocomplete="off"
+      />
+      <p :for={error <- @form[:name].errors} class="invalid-feedback">{translate_error(error)}</p>
     </div>
     <div>
       <input
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit" value="Create Board" />
+        type="submit"
+        value="Create Board"
+      />
     </div>
-  </form>
+  </.form>
 </div>

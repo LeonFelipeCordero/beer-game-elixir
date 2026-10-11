@@ -5,10 +5,10 @@ defmodule BeerGameWeb.Endpoint do
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
-    store: PhoenixLiveSession,
-    pub_sub: BeerGame.PubSub,
+    store: :cookie,
     key: "_beer_game_key",
-    signing_salt: "Wi4jjuz0"
+    signing_salt: "Wi4jjuz0",
+    same_site: "Lax"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -20,8 +20,8 @@ defmodule BeerGameWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :beer_game,
-    gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    gzip: true,
+    only: BeerGameWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

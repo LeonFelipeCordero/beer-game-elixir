@@ -1,6 +1,7 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss" source(none);
+@source "../js";
+@source "../../lib/beer_game_web";
+@plugin "@tailwindcss/forms";
 
 /* This file is for your main application CSS */
 

@@ -6,8 +6,8 @@ defmodule BeerGame.Game.Player do
     field :name, :string
     field :role, :string
     field :backlog, :integer
-    field :lastOrder, :integer
-    field :weeklyOrders, :integer
+    field :last_order, :integer, source: :lastOrder
+    field :weekly_orders, :integer, source: :weeklyOrders
     field :stock, :integer
     field :cpu, :boolean
 
@@ -21,7 +21,7 @@ defmodule BeerGame.Game.Player do
   @doc false
   def changeset(player, attrs) do
     player
-    |> cast(attrs, [:name, :role, :stock, :backlog, :weeklyOrders, :lastOrder])
-    |> validate_required([:name, :role, :stock, :backlog, :weeklyOrders, :lastOrder])
+    |> cast(attrs, [:name, :role, :stock, :backlog, :weekly_orders, :last_order])
+    |> validate_required([:name, :role, :stock, :backlog, :weekly_orders, :last_order])
   end
 end

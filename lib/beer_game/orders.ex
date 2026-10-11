@@ -3,6 +3,7 @@ defmodule BeerGame.Orders do
   alias BeerGame.Repo
 
   alias BeerGame.Game.Order
+  alias BeerGame.Game.Player
   alias BeerGame.Game.PlayerOrders
   alias BeerGame.Game.CpuOrderData
 
@@ -18,12 +19,10 @@ defmodule BeerGame.Orders do
     |> Repo.insert()
   end
 
-  def create_player_order(attrs \\ %{}, order, player) do
-    %PlayerOrders{}
-    |> PlayerOrders.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:order, order)
-    |> Ecto.Changeset.put_assoc(:player, player)
-    |> Repo.insert()
+  def create_player_order(order, player), do: create_player_order(%{}, order, player)
+
+  def create_player_order(attrs, order, player) do
+    insert_player_order(attrs, order, player)
     |> broadcast_player_order(:order_created)
   end
 
@@ -55,39 +54,63 @@ defmodule BeerGame.Orders do
   end
 
   def create_orders(socket, amount) do
-    player = socket.assigns[:player]
-    board = socket.assigns[:board]
+    result =
+      Repo.transact(fn ->
+        players =
+          Repo.all(
+            from p in Player,
+              where: p.board_id == ^socket.assigns.board.id,
+              order_by: p.id,
+              lock: "FOR UPDATE"
+          )
 
-    contra_part =
-      case player.role do
-        "retailer" -> Enum.filter(board.players, fn p -> p.role == "wholesaler" end)
-        "wholesaler" -> Enum.filter(board.players, fn p -> p.role == "factory" end)
-      end
-      |> Enum.at(0)
+        with %Player{} = player <- Enum.find(players, &(&1.id == socket.assigns.player.id)),
+             %Player{} = supplier <- find_supplier(players, player.role),
+             {:ok, order} <- create_order(%{amount: amount, type: "PLAYER_ORDER"}),
+             {:ok, receiving} <- insert_player_order(%{type: "RECEIVING"}, order, player),
+             {:ok, sending} <- insert_player_order(%{type: "SENDING"}, order, supplier) do
+          {:ok, {order, [receiving, sending]}}
+        else
+          nil -> {:error, :supplier_unavailable}
+          {:error, _reason} = error -> error
+        end
+      end)
 
-    case create_order(%{amount: amount, type: "PLAYER_ORDER"}) do
-      {:ok, order} ->
-        create_player_order(%{type: "RECEIVING"}, order, player)
-        create_player_order(%{type: "SENDING"}, order, contra_part)
+    case result do
+      {:ok, {order, associations}} ->
+        Enum.each(associations, &broadcast_player_order({:ok, &1}, :order_created))
         order
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("something went wrong...")
-        IO.inspect(changeset)
+      {:error, _reason} = error ->
+        error
     end
   end
 
+  def deliver_order(order_id, player_id), do: BeerGame.OrderDelivery.deliver(order_id, player_id)
+
   def create_cpu_orders(player) do
-    cpu_order_data = get_cpu_order_data_by_player(player.id)
+    result =
+      Repo.transact(fn ->
+        with %Player{} = player <-
+               Repo.one(from p in Player, where: p.id == ^player.id, lock: "FOR UPDATE"),
+             %CpuOrderData{} = data <- get_cpu_order_data_by_player(player.id),
+             {:ok, order} <- create_order(%{amount: data.amount, type: "CPU_ORDER"}),
+             {:ok, association} <- insert_player_order(%{type: "SENDING"}, order, player),
+             {:ok, data} <- update_cpu_order_data(data) do
+          {:ok, {association, data}}
+        else
+          nil -> {:error, :player_not_found}
+          {:error, _reason} = error -> error
+        end
+      end)
 
-    case create_order(%{amount: cpu_order_data.amount, type: "CPU_ORDER"}) do
-      {:ok, order} ->
-        create_player_order(%{type: "SENDING"}, order, player)
-        update_cpu_order_data(cpu_order_data)
+    case result do
+      {:ok, {association, data}} ->
+        broadcast_player_order({:ok, association}, :order_created)
+        {:ok, data}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("something went wrong...")
-        IO.inspect(changeset)
+      {:error, _reason} = error ->
+        error
     end
   end
 
@@ -95,21 +118,31 @@ defmodule BeerGame.Orders do
     PlayerOrders
     |> where(order_id: ^order_id)
     |> Repo.all()
-    |> Repo.preload(:player)
-    |> Repo.preload(:order)
+    |> Repo.preload([:player, :order])
   end
 
   def create_cpu_order_data(player) do
-    IO.inspect(player)
-
     %CpuOrderData{}
-    |> CpuOrderData.changeset(%{amount: player.weeklyOrders})
+    |> CpuOrderData.changeset(%{amount: player.weekly_orders})
     |> Ecto.Changeset.put_assoc(:player, player)
     |> Repo.insert()
   end
 
   def subscribe(topic) do
     Phoenix.PubSub.subscribe(BeerGame.PubSub, topic)
+  end
+
+  defp find_supplier(players, role) do
+    supplier_role = %{"retailer" => "wholesaler", "wholesaler" => "factory"}[role]
+    Enum.find(players, &(&1.role == supplier_role))
+  end
+
+  defp insert_player_order(attrs, order, player) do
+    %PlayerOrders{}
+    |> PlayerOrders.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:order, order)
+    |> Ecto.Changeset.put_assoc(:player, player)
+    |> Repo.insert()
   end
 
   defp broadcast_player_order({:error, _} = error, _event), do: error
@@ -134,9 +167,10 @@ defmodule BeerGame.Orders do
 
   defp update_cpu_order_data(cpu_order_data) do
     new_amount =
-      cond do
-        cpu_order_data.amount < 10 -> cpu_order_data.amount + 2
-        true -> Integer.floor_div(cpu_order_data.amount, 5)
+      if cpu_order_data.amount < 10 do
+        cpu_order_data.amount + 2
+      else
+        Integer.floor_div(cpu_order_data.amount, 5)
       end
 
     cpu_order_data

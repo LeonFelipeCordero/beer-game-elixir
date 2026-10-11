@@ -4,7 +4,7 @@ defmodule BeerGame.Game.Order do
 
   schema "orders" do
     field :amount, :integer
-    field :state, :string
+    field :state, :string, default: "PENDING"
     field :type, :string
 
     timestamps()
