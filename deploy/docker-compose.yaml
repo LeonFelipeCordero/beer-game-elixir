@@ -22,11 +22,5 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://beer_game:12345@db/beer_game
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?Generate with mix phx.gen.secret}
-      PHX_HOST: ${PHX_HOST:-localhost}
-    command:
-      - sh
-      - -c
       MIX_ENV: prod
       DATABASE_URL: ecto://beer_gmae:12345@db/beer_game
