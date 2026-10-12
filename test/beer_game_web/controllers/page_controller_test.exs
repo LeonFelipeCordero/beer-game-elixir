@@ -1,8 +1,11 @@
-defmodule BeerGameWeb.PageControllerTest do
+defmodule BeerGameWeb.LandingPageTest do
   use BeerGameWeb.ConnCase
 
-  test "GET /", %{conn: conn} do
-    conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+  test "GET / renders the game entry form and modern root layout", %{conn: conn} do
+    html = conn |> get(~p"/") |> html_response(200)
+    assert html =~ ~s(phx-submit="join_board")
+    assert html =~ "Join Board"
+    assert html =~ ~s(href="/board/new")
+    assert html =~ ~s(name="csrf-token")
   end
 end

@@ -3,22 +3,20 @@ defmodule BeerGameWeb.BoardLive.PlayerSelection do
 
   alias BeerGame.Boards
   alias BeerGame.Orders
+  alias BeerGameWeb.LiveSession
 
   @impl true
   def mount(_params, session, socket) do
+    session = LiveSession.get_session(session)
     player = Map.get(session, "player")
     board = Map.get(session, "board")
 
     if player != nil and board != nil do
-      IO.puts("User is already in a game")
-
-      {:ok,
-       socket
-       |> push_redirect(to: Routes.board_show_path(socket, :show, board))}
+      {:ok, push_navigate(socket, to: ~p"/board/#{board}")}
     else
       socket =
         socket
-        |> PhoenixLiveSession.maybe_subscribe(session)
+        |> LiveSession.maybe_subscribe(session)
         |> put_session_assigns(session)
 
       if connected?(socket) do
@@ -42,29 +40,19 @@ defmodule BeerGameWeb.BoardLive.PlayerSelection do
      |> assign(:available_roles, available_roles)}
   end
 
-  def handle_info({:live_session_updated, session}, socket) do
-    {:noreply, put_session_assigns(socket, session)}
+  @impl true
+  def handle_info({:live_session_updated, _session}, socket) do
+    session = LiveSession.get_session(%{"live_session_id" => socket.private.live_session_id})
+    {:noreply, assign(socket, :player, Map.get(session, "player"))}
   end
 
-  @impl true
-  def handle_info({:player_created, player}, socket) do
-    IO.puts("Player creted #{player.id}")
-
-    {:noreply,
-     update(socket, :available_roles, fn roles ->
-       Enum.filter(roles, fn role -> role != player.role end)
-     end)}
+  def handle_info({event, player}, socket)
+      when event in [:player_created, :player_deleted, :player_updated] do
+    {:noreply, refresh_board(socket, player.board_id)}
   end
 
-  @impl true
-  def handle_info({:player_deleted, player}, socket) do
-    IO.puts("Player deleted #{player.id}")
-    {:noreply, update(socket, :available_roles, fn roles -> [player.role | roles] end)}
-  end
-
-  @impl true
   def handle_info({:board_updated, board}, socket) do
-    {:noreply, update(socket, :board, board)}
+    {:noreply, refresh_board(socket, board.id)}
   end
 
   @impl true
@@ -75,14 +63,14 @@ defmodule BeerGameWeb.BoardLive.PlayerSelection do
         available_roles = resolve_available_roles(board.players)
         if Enum.empty?(available_roles), do: Boards.update_board(board, %{full: true})
 
-        PhoenixLiveSession.put_session(socket, "player", player)
-        PhoenixLiveSession.put_session(socket, "board", board)
+        LiveSession.put_session(socket, "player", player)
+        LiveSession.put_session(socket, "board", board)
 
         Orders.create_cpu_order_data(player)
 
         {:noreply,
          socket
-         |> push_redirect(to: Routes.board_show_path(socket, :show, board))}
+         |> push_navigate(to: ~p"/board/#{board}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
@@ -93,6 +81,15 @@ defmodule BeerGameWeb.BoardLive.PlayerSelection do
     socket
     |> assign(:board, Map.get(session, "board"))
     |> assign(:player, Map.get(session, "player"))
+  end
+
+  defp refresh_board(socket, board_id) do
+    if board_id == socket.assigns.board.id do
+      board = Boards.get_board!(board_id)
+      assign(socket, board: board, available_roles: resolve_available_roles(board.players))
+    else
+      socket
+    end
   end
 
   defp resolve_available_roles(players) do

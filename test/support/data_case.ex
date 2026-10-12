@@ -28,9 +28,13 @@ defmodule BeerGame.DataCase do
   end
 
   setup tags do
+    setup_sandbox(tags)
+    :ok
+  end
+
+  def setup_sandbox(tags) do
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(BeerGame.Repo, shared: not tags[:async])
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
-    :ok
   end
 
   @doc """

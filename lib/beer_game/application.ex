@@ -14,11 +14,12 @@ defmodule BeerGame.Application do
       BeerGameWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: BeerGame.PubSub},
+      BeerGame.LiveSessionStore,
       # Start the Endpoint (http/https)
       BeerGameWeb.Endpoint,
       # Start a worker by calling: BeerGame.Worker.start_link(arg)
       # {BeerGame.Worker, arg}
-      BeerGame.SateRunner,
+      BeerGame.StateRunner,
       BeerGame.OrderRunner,
       BeerGame.FactoryRunner
     ]

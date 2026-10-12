@@ -5,7 +5,7 @@ defmodule BeerGame.Repo.Migrations.CreatePlayerOrders do
     create table(:player_orders) do
       add :type, :string, null: false
       add :player_id, references(:players, on_delete: :delete_all)
-      add :order_id, references(:orders, on_delte: :delete_all)
+      add :order_id, references(:orders)
 
       timestamps()
     end

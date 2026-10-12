@@ -4,25 +4,15 @@ defmodule BeerGameWeb.LandingLive.Index do
   alias BeerGame.Boards
 
   @impl true
-  def mount(_params, _landing, socket) do
-    socket =
-      socket
-      |> assign(:name, "")
-
-    {:ok, socket}
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "BeerGame", form: to_form(%{"name" => ""}))}
   end
 
   @impl true
-  def handle_event(
-        "join_board",
-        %{"name" => name},
-        socket
-      ) do
-    board = Boards.get_by_name(name)
-
-    {:noreply,
-     push_redirect(socket,
-       to: Routes.board_player_selection_path(socket, :player_selection, board)
-     )}
+  def handle_event("join_board", %{"name" => name}, socket) do
+    case Boards.get_by_name(name) do
+      nil -> {:noreply, put_flash(socket, :error, "Board not found")}
+      board -> {:noreply, push_navigate(socket, to: ~p"/board/#{board}/player")}
+    end
   end
 end

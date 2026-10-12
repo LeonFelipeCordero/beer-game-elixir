@@ -1,196 +1,174 @@
 defmodule BeerGameWeb.BoardLive.Show do
   use BeerGameWeb, :live_view
 
-  alias BeerGame.Boards
-  alias BeerGame.Orders
+  alias BeerGame.{Boards, Orders, Repo}
+  alias BeerGame.Game.{Board, Player}
+  alias BeerGameWeb.LiveSession
 
   @impl true
   def mount(_params, session, socket) do
+    session = LiveSession.get_session(session)
+
     if connected?(socket) do
-      Orders.subscribe("player_orders")
-      Orders.subscribe("orders")
-      Orders.subscribe("players")
-      Orders.subscribe("order_time")
-      Orders.subscribe("cpu_orders")
-      Orders.subscribe("factory")
+      Enum.each(
+        ~w(player_orders orders players order_time cpu_orders factory),
+        &Orders.subscribe/1
+      )
     end
 
-    {:ok,
-     socket
-     |> PhoenixLiveSession.maybe_subscribe(session)
-     |> put_session_assigns(session)}
+    {:ok, socket |> LiveSession.maybe_subscribe(session) |> put_session_assigns(session)}
   end
 
   @impl true
-  def handle_info({:live_session_updated, session}, socket) do
+  def handle_info({:live_session_updated, _session}, socket) do
+    session = LiveSession.get_session(%{"live_session_id" => socket.private.live_session_id})
     {:noreply, put_session_assigns(socket, session)}
   end
 
-  @impl true
   def handle_info({:order_created, player_order}, socket) do
-    player_id = player_order.player.id
-    order = Orders.get_order!(player_order.order.id)
-
-    IO.puts("""
-      Receivev order created, order => #{order.id}, player => #{player_id}
-    """)
-
-    cond do
-      player_order.type == "RECEIVING" -> {:noreply, socket}
-      player_id != socket.assigns[:player].id -> {:noreply, socket}
-      true -> {:noreply, update(socket, :sending_orders, fn orders -> [order | orders] end)}
+    if player_order.type == "SENDING" and player_order.player_id == socket.assigns.player.id do
+      order = Orders.get_order!(player_order.order_id)
+      {:noreply, update(socket, :sending_orders, &[order | &1])}
+    else
+      {:noreply, socket}
     end
   end
 
-  @impl true
   def handle_info({:order_updated, order}, socket) do
-    IO.puts("""
-      Receivev order updated, order => #{order.id}
-    """)
+    {:noreply,
+     socket
+     |> update(:sending_orders, &replace_order(&1, order))
+     |> update(:receiving_orders, &replace_order(&1, order))}
+  end
 
-    sending_order =
-      Enum.find(socket.assigns[:sending_orders], fn sending_order ->
-        order.id == sending_order.id
-      end)
-
-    receiving_order =
-      Enum.find(socket.assigns[:receiving_orders], fn receiving_order ->
-        order.id == receiving_order.id
-      end)
-
+  def handle_info({event, player}, socket) when event in [:player_created, :player_deleted] do
     cond do
-      receiving_order != nil ->
-        {:noreply,
-         update(socket, :receiving_orders, fn orders ->
-           rejected = Enum.reject(orders, fn o -> o.id == order.id end)
+      event == :player_deleted and player.id == socket.assigns.player.id ->
+        {:noreply, push_navigate(socket, to: ~p"/")}
 
-           [order | rejected]
-           |> Enum.sort_by(& &1.id, :desc)
-         end)}
-
-      sending_order != nil ->
-        {:noreply,
-         update(socket, :sending_orders, fn orders ->
-           rejected = Enum.reject(orders, fn o -> o.id == order.id end)
-
-           [order | rejected]
-           |> Enum.sort_by(& &1.id, :desc)
-         end)}
+      player.board_id == socket.assigns.board.id ->
+        {:noreply, assign(socket, :board, Boards.get_board!(player.board_id))}
 
       true ->
         {:noreply, socket}
     end
   end
 
-  @impl true
   def handle_info({:player_updated, player}, socket) do
-    IO.puts("""
-      Receivev player updated, player => #{player.id}
-    """)
+    socket =
+      if player.id == socket.assigns.player.id, do: assign(socket, :player, player), else: socket
 
-    if player.id == socket.assigns[:player].id do
-      {:noreply, update(socket, :player, fn _ -> player end)}
-    else
-      {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
-  @impl true
   def handle_info({:order_time_command, _value}, socket) do
-    IO.puts("Receivev order time action")
-    PhoenixLiveSession.put_session(socket, "order_time", true)
-    {:noreply, update(socket, :order_time, fn _ -> true end)}
+    with_player(socket, fn socket ->
+      LiveSession.put_session(socket, "order_time", true)
+      assign(socket, :order_time, true)
+    end)
   end
 
-  @impl true
   def handle_info({:cpu_order_command}, socket) do
-    IO.puts("Receivev cpu order command")
-
-    socket.assigns[:player]
-    |> Orders.create_cpu_orders()
-
-    {:noreply, socket}
+    with_player(socket, fn socket ->
+      Orders.create_cpu_orders(socket.assigns.player)
+      socket
+    end)
   end
 
-  @impl true
   def handle_info({:factory_deliver}, socket) do
-    player = socket.assigns[:player]
+    with_player(socket, fn socket ->
+      player = socket.assigns.player
 
-    if player.role == "factory" do
-      IO.puts("Receivev factory delivery command")
+      if player.role == "factory", do: Boards.produce_stock(player.id)
 
-      Boards.update_player(player, %{stock: player.stock + player.weeklyOrders})
-    end
-
-    {:noreply, socket}
+      socket
+    end)
   end
 
   @impl true
-  def handle_event("abandon_game", _, socket) do
-    player = socket.assigns[:player]
-
-    Boards.delete_player_by_role(player)
-
-    PhoenixLiveSession.put_session(socket, "board", nil)
-    PhoenixLiveSession.put_session(socket, "player", nil)
-
-    {:noreply,
-     socket
-     |> push_redirect(to: Routes.landing_index_path(socket, :index))}
+  def handle_event("abandon_game", _params, socket) do
+    Boards.delete_player_by_role(socket.assigns.player)
+    LiveSession.put_session(socket, "board", nil)
+    LiveSession.put_session(socket, "player", nil)
+    LiveSession.put_session(socket, "order_time", false)
+    {:noreply, push_navigate(socket, to: ~p"/")}
   end
 
   def handle_event("create_order", %{"amount" => amount}, socket) do
-    PhoenixLiveSession.put_session(socket, "order_time", false)
-    player = socket.assigns[:player]
-
-    new_player = Boards.update_weekly_order(player, amount, socket)
-    Orders.create_orders(socket, amount)
-
-    {:noreply,
-     socket
-     |> assign(:player, new_player)
-     |> assign(:order_time, false)}
+    with_player(socket, fn socket ->
+      changeset = Player.changeset(socket.assigns.player, %{weekly_orders: amount})
+      submit_order(socket, changeset)
+    end)
   end
 
   def handle_event("deliver_order", %{"order_id" => order_id}, socket) do
-    player_orders = Orders.get_player_orders(order_id)
+    case Orders.deliver_order(order_id, socket.assigns.player.id) do
+      {:ok, _order} -> {:noreply, socket}
+      {:error, _reason} -> {:noreply, put_flash(socket, :error, "Order cannot be delivered")}
+    end
+  end
 
-    order = Enum.at(player_orders, 0).order
-    Orders.update_order(order, %{:state => "DELIVERED"})
-    Boards.deliver_order(player_orders, order)
+  defp submit_order(socket, %{valid?: false}),
+    do: put_flash(socket, :error, "Invalid order amount")
 
-    {:noreply, socket}
+  defp submit_order(socket, changeset) do
+    amount = Ecto.Changeset.get_field(changeset, :weekly_orders)
+
+    result =
+      if socket.assigns.player.role == "factory",
+        do: :ok,
+        else: Orders.create_orders(socket, amount)
+
+    case result do
+      {:error, _reason} ->
+        put_flash(socket, :error, "Supplier is unavailable")
+
+      _ ->
+        player = Boards.update_weekly_order(socket.assigns.player, amount, socket)
+        LiveSession.put_session(socket, "order_time", false)
+        assign(socket, player: player, order_time: false)
+    end
+  end
+
+  defp with_player(socket, callback) do
+    case Repo.get(Player, socket.assigns.player.id) do
+      nil -> {:noreply, push_navigate(socket, to: ~p"/")}
+      player -> {:noreply, callback.(assign(socket, :player, player))}
+    end
   end
 
   defp put_session_assigns(socket, session) do
-    session_board = Map.get(session, "board")
-    session_player = Map.get(session, "player")
-    order_time = Map.get(session, "order_time", false)
-
-    if session_board != nil and session_player != nil do
-      board = Boards.get_board!(session_board.id)
-      player = Boards.get_player(session_player.id)
-
-      sending_orders =
-        Enum.reverse(player.player_orders)
-        |> Enum.filter(fn po -> po.type == "SENDING" end)
-        |> Enum.take(10)
-        |> Enum.map(fn po -> po.order end)
-
-      receiving_orders =
-        Enum.reverse(player.player_orders)
-        |> Enum.filter(fn po -> po.type == "RECEIVING" end)
-        |> Enum.take(10)
-        |> Enum.map(fn po -> po.order end)
+    with %{id: board_id} <- Map.get(session, "board"),
+         %{id: player_id} <- Map.get(session, "player"),
+         %Board{} = board <- Repo.get(Board, board_id),
+         %Player{board_id: ^board_id} = player <- Repo.get(Player, player_id) do
+      player = Repo.preload(player, player_orders: :order)
 
       socket
-      |> assign(:board, board)
+      |> assign(:page_title, "Board #{board.name}")
+      |> assign(:board, Repo.preload(board, :players))
       |> assign(:player, player)
-      |> assign(:sending_orders, sending_orders)
-      |> assign(:receiving_orders, receiving_orders)
-      |> assign(:order_time, order_time)
+      |> assign(:sending_orders, recent_orders(player.player_orders, "SENDING"))
+      |> assign(:receiving_orders, recent_orders(player.player_orders, "RECEIVING"))
+      |> assign(:order_time, Map.get(session, "order_time", false))
     else
-      socket
+      _ -> push_navigate(socket, to: ~p"/")
+    end
+  end
+
+  defp recent_orders(player_orders, type) do
+    player_orders
+    |> Enum.reverse()
+    |> Enum.filter(&(&1.type == type))
+    |> Enum.take(10)
+    |> Enum.map(& &1.order)
+  end
+
+  defp replace_order(orders, order) do
+    if Enum.any?(orders, &(&1.id == order.id)) do
+      [order | Enum.reject(orders, &(&1.id == order.id))] |> Enum.sort_by(& &1.id, :desc)
+    else
+      orders
     end
   end
 end

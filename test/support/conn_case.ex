@@ -24,7 +24,10 @@ defmodule BeerGameWeb.ConnCase do
       import Phoenix.ConnTest
       import BeerGameWeb.ConnCase
 
-      alias BeerGameWeb.Router.Helpers, as: Routes
+      use Phoenix.VerifiedRoutes,
+        endpoint: BeerGameWeb.Endpoint,
+        router: BeerGameWeb.Router,
+        statics: BeerGameWeb.static_paths()
 
       # The default endpoint for testing
       @endpoint BeerGameWeb.Endpoint
@@ -32,8 +35,7 @@ defmodule BeerGameWeb.ConnCase do
   end
 
   setup tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(BeerGame.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    BeerGame.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

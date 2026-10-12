@@ -13,7 +13,11 @@ config :beer_game,
 # Configures the endpoint
 config :beer_game, BeerGameWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: BeerGameWeb.ErrorView, accepts: ~w(html json), layout: false],
+  adapter: Bandit.PhoenixAdapter,
+  render_errors: [
+    formats: [html: BeerGameWeb.ErrorHTML, json: BeerGameWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: BeerGame.PubSub,
   live_view: [signing_salt: "5qVz9dSb"]
 
@@ -31,7 +35,7 @@ config :swoosh, :api_client, false
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.0",
+  version: "0.28.2",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -40,7 +44,7 @@ config :esbuild,
   ]
 
 # Configures Elixir's Logger
-config :logger, :console,
+config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
@@ -48,10 +52,9 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :tailwind,
-  version: "3.0.23",
+  version: "4.3.3",
   default: [
     args: ~w(
-      --config=tailwind.config.js
       --input=css/app.css
       --output=../priv/static/assets/app.css
     ),

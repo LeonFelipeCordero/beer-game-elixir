@@ -1,4 +1,4 @@
-defmodule BeerGame.SateRunner do
+defmodule BeerGame.StateRunner do
   use GenServer
 
   def start_link(_opts) do

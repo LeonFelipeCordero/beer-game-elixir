@@ -2,25 +2,14 @@ defmodule BeerGameWeb.BoardLive.New do
   use BeerGameWeb, :live_view
 
   alias BeerGame.Boards
+  alias BeerGame.Game.Board
 
   @impl true
   def mount(_params, _session, socket) do
-    socket =
-      socket
-      |> assign(:name, "")
-
-    {:ok, socket}
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Board")
-    |> assign(:name, "")
+    {:ok,
+     socket
+     |> assign(:page_title, "New Board")
+     |> assign(:form, to_form(Boards.change_board(%Board{}), as: nil))}
   end
 
   @impl true
@@ -30,12 +19,10 @@ defmodule BeerGameWeb.BoardLive.New do
         {:noreply,
          socket
          |> put_flash(:info, "Board created successfully")
-         |> push_redirect(
-           to: Routes.board_player_selection_path(socket, :player_selection, board)
-         )}
+         |> push_navigate(to: ~p"/board/#{board}/player")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        {:noreply, assign(socket, :form, to_form(changeset, as: nil))}
     end
   end
 end

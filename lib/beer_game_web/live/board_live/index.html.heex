@@ -12,17 +12,16 @@
   <tbody id="board">
     <%= for board <- @board_collection do %>
       <tr id={"board-#{board.id}"}>
-        <td><%= board.state %></td>
-        <td><%= board.full %></td>
+        <td>{board.state}</td>
+        <td>{board.full}</td>
 
         <td>
-          <span><%= live_redirect "Show", to: Routes.board_show_path(@socket, :show, board) %></span>
-          <span><%= live_patch "Edit", to: Routes.board_index_path(@socket, :edit, board) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: board.id, data: [confirm: "Are you sure?"] %></span>
+          <span><.link navigate={~p"/board/#{board}/player"}>Show</.link></span>
+          <span><button phx-click="delete" phx-value-id={board.id} data-confirm="Are you sure?">Delete</button></span>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<span><%= live_patch "New Board", to: Routes.board_index_path(@socket, :new) %></span>
+<span><.link navigate={~p"/board/new"}>New Board</.link></span>

@@ -6,8 +6,8 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :beer_game, BeerGame.Repo,
-  username: "root",
-  password: "",
+  username: "beer_game",
+  password: "12345",
   hostname: "localhost",
   database: "beer_game_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -24,7 +24,7 @@ config :beer_game, BeerGameWeb.Endpoint,
 config :beer_game, BeerGame.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

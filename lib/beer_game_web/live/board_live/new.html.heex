@@ -3,10 +3,15 @@
     <%= if @live_action in [:new] do %>
       <div class="grid place-content-center h-screen">
         <div class="w-50">
-          <.live_component module={BeerGameWeb.BoardLive.FormComponent} id={:new} title={@page_title}
-            action={@live_action} name={@name} />
+          <.live_component
+            module={BeerGameWeb.BoardLive.FormComponent}
+            id={:new}
+            title={@page_title}
+            action={@live_action}
+            form={@form}
+          />
         </div>
       </div>
-      <% end %>
+    <% end %>
   </div>
 </div>
