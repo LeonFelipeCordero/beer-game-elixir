@@ -1,21 +1,45 @@
-<main>
-  <p
-    :if={Phoenix.Flash.get(@flash, :info)}
-    class="alert alert-info"
-    role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"
-  >
-    {Phoenix.Flash.get(@flash, :info)}
-  </p>
-  <p
-    :if={Phoenix.Flash.get(@flash, :error)}
-    class="alert alert-danger"
-    role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"
-  >
-    {Phoenix.Flash.get(@flash, :error)}
-  </p>
-  {@inner_content}
-</main>
+<div class="app-shell">
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <.link navigate={~p"/"} class="brand" aria-label="Beer Game home">
+        <span class="brand-mark"><.icon name="box" /></span>
+        <span>BEER GAME</span>
+      </.link>
+      <span class="masthead-note">A small supply chain. A bigger picture.</span>
+      <nav aria-label="Main navigation">
+        <.link navigate={~p"/board"} class="nav-link">Boards <.icon name="arrow" /></.link>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="main-content">
+    <div
+      :if={Phoenix.Flash.get(@flash, :info) || Phoenix.Flash.get(@flash, :error)}
+      class="flash-area"
+    >
+      <p
+        :if={Phoenix.Flash.get(@flash, :info)}
+        class="alert alert-info"
+        role="status"
+        phx-click="lv:clear-flash"
+        phx-value-key="info"
+      >
+        {Phoenix.Flash.get(@flash, :info)}
+      </p>
+      <p
+        :if={Phoenix.Flash.get(@flash, :error)}
+        class="alert alert-danger"
+        role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="error"
+      >
+        {Phoenix.Flash.get(@flash, :error)}
+      </p>
+    </div>
+    {@inner_content}
+  </main>
+  <footer class="site-footer">
+    <span>Learn the system. Play your part.</span>
+    <span>The Beer Game <span aria-hidden="true">/</span> Systems thinking in practice</span>
+  </footer>
+</div>

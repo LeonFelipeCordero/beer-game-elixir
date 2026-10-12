@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-12T16:10:10Z",
+  "title": "Design System: Beer Game",
+  "extensions": {
+    "colorMeta": {
+      "deep-blue": {
+        "role": "primary",
+        "displayName": "Workshop Blue",
+        "canonical": "#193b49",
+        "tonalRamp": [
+          "oklch(15% 0.046 227.6)",
+          "oklch(25% 0.046 227.6)",
+          "oklch(35% 0.046 227.6)",
+          "oklch(45% 0.046 227.6)",
+          "oklch(55% 0.046 227.6)",
+          "oklch(65% 0.046 227.6)",
+          "oklch(80% 0.046 227.6)",
+          "oklch(95% 0.046 227.6)"
+        ]
+      },
+      "muted-teal": {
+        "role": "neutral",
+        "displayName": "Muted Teal",
+        "canonical": "#52686e",
+        "tonalRamp": [
+          "oklch(15% 0.028 216.2)",
+          "oklch(25% 0.028 216.2)",
+          "oklch(35% 0.028 216.2)",
+          "oklch(45% 0.028 216.2)",
+          "oklch(55% 0.028 216.2)",
+          "oklch(65% 0.028 216.2)",
+          "oklch(80% 0.028 216.2)",
+          "oklch(95% 0.028 216.2)"
+        ]
+      },
+      "cool-ground": {
+        "role": "neutral",
+        "displayName": "Cool Ground",
+        "canonical": "#f1f4f1",
+        "tonalRamp": [
+          "oklch(15% 0.005 145.5)",
+          "oklch(25% 0.005 145.5)",
+          "oklch(35% 0.005 145.5)",
+          "oklch(45% 0.005 145.5)",
+          "oklch(55% 0.005 145.5)",
+          "oklch(65% 0.005 145.5)",
+          "oklch(80% 0.005 145.5)",
+          "oklch(95% 0.005 145.5)"
+        ]
+      },
+      "white-surface": {
+        "role": "neutral",
+        "displayName": "White Work Surface",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(25% 0.000 89.9)",
+          "oklch(35% 0.000 89.9)",
+          "oklch(45% 0.000 89.9)",
+          "oklch(55% 0.000 89.9)",
+          "oklch(65% 0.000 89.9)",
+          "oklch(80% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "soft-divider": {
+        "role": "neutral",
+        "displayName": "Soft Divider",
+        "canonical": "#d3ddda",
+        "tonalRamp": [
+          "oklch(15% 0.012 176.3)",
+          "oklch(25% 0.012 176.3)",
+          "oklch(35% 0.012 176.3)",
+          "oklch(45% 0.012 176.3)",
+          "oklch(55% 0.012 176.3)",
+          "oklch(65% 0.012 176.3)",
+          "oklch(80% 0.012 176.3)",
+          "oklch(95% 0.012 176.3)"
+        ]
+      },
+      "citrus": {
+        "role": "secondary",
+        "displayName": "Citrus Action",
+        "canonical": "#e7f269",
+        "tonalRamp": [
+          "oklch(15% 0.160 113.3)",
+          "oklch(25% 0.160 113.3)",
+          "oklch(35% 0.160 113.3)",
+          "oklch(45% 0.160 113.3)",
+          "oklch(55% 0.160 113.3)",
+          "oklch(65% 0.160 113.3)",
+          "oklch(80% 0.160 113.3)",
+          "oklch(95% 0.160 113.3)"
+        ]
+      },
+      "citrus-hover": {
+        "role": "secondary",
+        "displayName": "Deeper Citrus",
+        "canonical": "#d5e34c",
+        "tonalRamp": [
+          "oklch(15% 0.170 114.5)",
+          "oklch(25% 0.170 114.5)",
+          "oklch(35% 0.170 114.5)",
+          "oklch(45% 0.170 114.5)",
+          "oklch(55% 0.170 114.5)",
+          "oklch(65% 0.170 114.5)",
+          "oklch(80% 0.170 114.5)",
+          "oklch(95% 0.170 114.5)"
+        ]
+      },
+      "pale-blue": {
+        "role": "secondary",
+        "displayName": "Soft Blue",
+        "canonical": "#e6eff0",
+        "tonalRamp": [
+          "oklch(15% 0.010 204.9)",
+          "oklch(25% 0.010 204.9)",
+          "oklch(35% 0.010 204.9)",
+          "oklch(45% 0.010 204.9)",
+          "oklch(55% 0.010 204.9)",
+          "oklch(65% 0.010 204.9)",
+          "oklch(80% 0.010 204.9)",
+          "oklch(95% 0.010 204.9)"
+        ]
+      },
+      "on-blue-muted": {
+        "role": "neutral",
+        "displayName": "Muted on Blue",
+        "canonical": "#c0d5da",
+        "tonalRamp": [
+          "oklch(15% 0.024 213.6)",
+          "oklch(25% 0.024 213.6)",
+          "oklch(35% 0.024 213.6)",
+          "oklch(45% 0.024 213.6)",
+          "oklch(55% 0.024 213.6)",
+          "oklch(65% 0.024 213.6)",
+          "oklch(80% 0.024 213.6)",
+          "oklch(95% 0.024 213.6)"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Success Green",
+        "canonical": "#24634c",
+        "tonalRamp": [
+          "oklch(15% 0.075 165.9)",
+          "oklch(25% 0.075 165.9)",
+          "oklch(35% 0.075 165.9)",
+          "oklch(45% 0.075 165.9)",
+          "oklch(55% 0.075 165.9)",
+          "oklch(65% 0.075 165.9)",
+          "oklch(80% 0.075 165.9)",
+          "oklch(95% 0.075 165.9)"
+        ]
+      },
+      "success-wash": {
+        "role": "tertiary",
+        "displayName": "Success Wash",
+        "canonical": "#e3f0e8",
+        "tonalRamp": [
+          "oklch(15% 0.017 159.1)",
+          "oklch(25% 0.017 159.1)",
+          "oklch(35% 0.017 159.1)",
+          "oklch(45% 0.017 159.1)",
+          "oklch(55% 0.017 159.1)",
+          "oklch(65% 0.017 159.1)",
+          "oklch(80% 0.017 159.1)",
+          "oklch(95% 0.017 159.1)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Caution Brown",
+        "canonical": "#77501c",
+        "tonalRamp": [
+          "oklch(15% 0.085 70.3)",
+          "oklch(25% 0.085 70.3)",
+          "oklch(35% 0.085 70.3)",
+          "oklch(45% 0.085 70.3)",
+          "oklch(55% 0.085 70.3)",
+          "oklch(65% 0.085 70.3)",
+          "oklch(80% 0.085 70.3)",
+          "oklch(95% 0.085 70.3)"
+        ]
+      },
+      "warning-wash": {
+        "role": "tertiary",
+        "displayName": "Caution Wash",
+        "canonical": "#fbefce",
+        "tonalRamp": [
+          "oklch(15% 0.045 90.4)",
+          "oklch(25% 0.045 90.4)",
+          "oklch(35% 0.045 90.4)",
+          "oklch(45% 0.045 90.4)",
+          "oklch(55% 0.045 90.4)",
+          "oklch(65% 0.045 90.4)",
+          "oklch(80% 0.045 90.4)",
+          "oklch(95% 0.045 90.4)"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Alert Red",
+        "canonical": "#a23333",
+        "tonalRamp": [
+          "oklch(15% 0.147 24.4)",
+          "oklch(25% 0.147 24.4)",
+          "oklch(35% 0.147 24.4)",
+          "oklch(45% 0.147 24.4)",
+          "oklch(55% 0.147 24.4)",
+          "oklch(65% 0.147 24.4)",
+          "oklch(80% 0.147 24.4)",
+          "oklch(95% 0.147 24.4)"
+        ]
+      },
+      "danger-wash": {
+        "role": "tertiary",
+        "displayName": "Alert Wash",
+        "canonical": "#fbe9e5",
+        "tonalRamp": [
+          "oklch(15% 0.020 32.5)",
+          "oklch(25% 0.020 32.5)",
+          "oklch(35% 0.020 32.5)",
+          "oklch(45% 0.020 32.5)",
+          "oklch(55% 0.020 32.5)",
+          "oklch(65% 0.020 32.5)",
+          "oklch(80% 0.020 32.5)",
+          "oklch(95% 0.020 32.5)"
+        ]
+      },
+      "focus-teal": {
+        "role": "secondary",
+        "displayName": "Focus Teal",
+        "canonical": "#28738a",
+        "tonalRamp": [
+          "oklch(15% 0.080 222.1)",
+          "oklch(25% 0.080 222.1)",
+          "oklch(35% 0.080 222.1)",
+          "oklch(45% 0.080 222.1)",
+          "oklch(55% 0.080 222.1)",
+          "oklch(65% 0.080 222.1)",
+          "oklch(80% 0.080 222.1)",
+          "oklch(95% 0.080 222.1)"
+        ]
+      },
+      "chain-line": {
+        "role": "neutral",
+        "displayName": "Chain Line",
+        "canonical": "#60818d",
+        "tonalRamp": [
+          "oklch(15% 0.042 222.3)",
+          "oklch(25% 0.042 222.3)",
+          "oklch(35% 0.042 222.3)",
+          "oklch(45% 0.042 222.3)",
+          "oklch(55% 0.042 222.3)",
+          "oklch(65% 0.042 222.3)",
+          "oklch(80% 0.042 222.3)",
+          "oklch(95% 0.042 222.3)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Barlow Condensed Semibold",
+        "purpose": "Large setup and page headings; locally bundled."
+      },
+      "headline": {
+        "displayName": "Barlow Condensed Semibold",
+        "purpose": "Page and gameplay headings."
+      },
+      "title": {
+        "displayName": "Barlow Semibold",
+        "purpose": "Panel and section headings."
+      },
+      "body": {
+        "displayName": "Barlow Regular",
+        "purpose": "Instructions and interface copy."
+      },
+      "label": {
+        "displayName": "Barlow Semibold",
+        "purpose": "Labels, table headers, statuses, and navigation."
+      }
+    },
+    "shadows": [
+      {
+        "name": "entry-panel-ambient",
+        "value": "0 8px 24px rgb(25 59 73 / 4%)",
+        "purpose": "Subtle separation of the setup entry form only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-color",
+        "value": "140ms ease-out",
+        "purpose": "Primary and secondary button hover color."
+      },
+      {
+        "name": "role-selection",
+        "value": "160ms ease-out",
+        "purpose": "Brief selected-role surface transition; no perpetual animation."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-to-medium",
+        "value": "1150px"
+      },
+      {
+        "name": "stack-layout",
+        "value": "800px"
+      },
+      {
+        "name": "narrow",
+        "value": "480px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main join, create, order, and production action.",
+      "html": "<button class=\"ds-button\">Join Board <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\" /></svg></button>",
+      "css": ".ds-button { display: inline-flex; align-items: center; justify-content: center; gap: 20px; min-height: 46px; padding: 13px 20px; border: 1px solid #d9e454; border-radius: 5px; background: var(--accent); color: var(--ink); font: 600 16px/1.2 Barlow, sans-serif; cursor: pointer; transition: background-color 140ms ease-out, color 140ms ease-out; } .ds-button:hover { background: var(--accent-hover); } .ds-button:focus-visible { outline: 3px solid #28738a; outline-offset: 4px; } .ds-button:active { background: var(--accent-hover); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined alternative or leave-game action.",
+      "html": "<button class=\"ds-button-secondary\">Quit Game</button>",
+      "css": ".ds-button-secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 13px 20px; border: 1px solid #9eafb1; border-radius: 5px; background: transparent; color: var(--ink); font: 600 16px/1.2 Barlow, sans-serif; cursor: pointer; transition: background-color 140ms ease-out, color 140ms ease-out; } .ds-button-secondary:hover { background: var(--blue-soft); border-color: var(--ink); } .ds-button-secondary:focus-visible { outline: 3px solid #28738a; outline-offset: 4px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Board name and quantity entry with visible focus and error states.",
+      "html": "<label class=\"ds-field\"><span>Board name</span><input type=\"text\" placeholder=\"e.g. team-AB\" /></label>",
+      "css": ".ds-field { display: block; color: var(--ink); font: 600 16px/1.5 Barlow, sans-serif; } .ds-field input { display: block; width: 100%; height: 52px; margin-top: 8px; padding: 12px 14px; border: 1px solid #9eafb1; border-radius: 5px; background: var(--surface); color: var(--ink); font: 400 16px/1.5 Barlow, sans-serif; } .ds-field input:focus-visible { border-color: #28738a; outline: 3px solid #28738a; outline-offset: 2px; } .ds-field input[aria-invalid=\"true\"] { border-color: var(--danger); }"
+    },
+    {
+      "name": "Masthead Navigation",
+      "kind": "nav",
+      "description": "Persistent branded shell navigation.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">BEER GAME</a><a href=\"#\">Boards <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\" /></svg></a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 24px; background: var(--ink); color: var(--surface); font: 600 16px/1.5 Barlow, sans-serif; } .ds-nav a { color: inherit; text-decoration: none; } .ds-nav a:last-child:hover { color: var(--accent); } .ds-nav a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }"
+    },
+    {
+      "name": "Selected Role Stop",
+      "kind": "custom",
+      "refersTo": "selected-chain-stop",
+      "description": "Highlights only the player's own place in the three-role chain.",
+      "html": "<div class=\"ds-role-stop\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 10h18l-2-6H5l-2 6Zm1 0v11h16V10M8 21v-7h5v7M3 10c0 3 4 3 4 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 4 3 4 0\" /></svg><span>Retailer</span><small>You</small></div>",
+      "css": ".ds-role-stop { display: inline-flex; align-items: center; gap: 9px; padding: 10px 14px; border: 1px solid var(--accent); border-radius: 5px; background: var(--accent); color: var(--ink); font: 600 14px/1.4 Barlow, sans-serif; transition: background-color 160ms ease-out; } .ds-role-stop svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .ds-role-stop small { font: 700 11px/1.4 Barlow, sans-serif; } .ds-role-stop:focus-visible { outline: 3px solid #28738a; outline-offset: 4px; }"
+    },
+    {
+      "name": "Semantic Status",
+      "kind": "chip",
+      "refersTo": "status-running",
+      "description": "Compact status label pairing meaning-coded text and wash.",
+      "html": "<span class=\"ds-status\">RUNNING</span>",
+      "css": ".ds-status { display: inline-block; padding: 4px 8px; border-radius: 4px; background: var(--success-bg); color: var(--success); font: 600 12px/1.4 Barlow, sans-serif; } .ds-status:focus-visible { outline: 3px solid #28738a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Table Panel",
+      "kind": "card",
+      "description": "Flat white container for semantic board and order tables.",
+      "html": "<section class=\"ds-panel\"><h2>Incoming</h2><table><thead><tr><th>Order</th><th>Quantity</th></tr></thead><tbody><tr><td>#12</td><td>8</td></tr></tbody></table></section>",
+      "css": ".ds-panel { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font-family: Barlow, sans-serif; } .ds-panel h2 { padding: 20px 24px; font-size: 22px; font-weight: 600; } .ds-panel table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; } .ds-panel th { padding: 12px 16px; border-block: 1px solid var(--line); background: #edf2f0; color: var(--muted); font-size: 12px; } .ds-panel td { padding: 17px 16px; border-bottom: 1px solid #e3e9e5; font-variant-numeric: tabular-nums; } .ds-panel tr:hover td { background: #f7f9f7; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Supply-Chain Workshop",
+    "overview": "A friendly educational Beer Game, not a beer store or SaaS admin. The visual system translates the clarity of a tabletop learning kit into a working web interface: deep-blue orientation, cool-white work areas, citrus actions, connected role pictograms, and quietly structured tables. It favors legibility and visible consequences over decorative atmosphere.\n\nThe build is code-led and uses authored inline SVGs rather than chosen comps or shipping image rasters. One shared three-role chain explains the system; the player's role alone is selected, never presented as a live cross-role view.",
+    "keyCharacteristics": [
+      "Cool, high-contrast blue and citrus palette with explicit semantic state colors.",
+      "Barlow for readable interface text; condensed Barlow for instructional display hierarchy.",
+      "Flat, square-ended paths and softly rounded working controls."
+    ],
+    "rules": [
+      {
+        "name": "The Meaning-Before-Decoration Rule",
+        "body": "Use citrus for the main action or selected role; reserve green, amber, and red for their demonstrated availability, pending, and error meanings.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Voice Rule",
+        "body": "Use Barlow Condensed for display hierarchy; keep working copy and controls in Barlow.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do keep the educational supply-chain workshop identity distinct from a beer retail storefront or generic admin dashboard.",
+      "Do use local Barlow assets and their accompanying SIL OFL notices.",
+      "Do keep role emphasis personal: highlight the current role, not a cross-role live overview.",
+      "Do preserve semantic labels, explicit status colors, keyboard focus, and responsive table actions."
+    ],
+    "donts": [
+      "Don't use citrus as a general-purpose status color; status hues retain their distinct meanings.",
+      "Don't treat an unapproved comp or image raster as an existing brand authority; none is part of the shipped visual system.",
+      "Don't turn tables into dashboard cards at desktop widths or remove their data hierarchy."
+    ]
+  }
+}

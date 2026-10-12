@@ -1,27 +1,59 @@
-<h1>Listing Board</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>State</th>
-      <th>finished</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="board">
-    <%= for board <- @board_collection do %>
-      <tr id={"board-#{board.id}"}>
-        <td>{board.state}</td>
-        <td>{board.full}</td>
-
-        <td>
-          <span><.link navigate={~p"/board/#{board}/player"}>Show</.link></span>
-          <span><button phx-click="delete" phx-value-id={board.id} data-confirm="Are you sure?">Delete</button></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<span><.link navigate={~p"/board/new"}>New Board</.link></span>
+<div class="boards-page">
+  <header class="page-heading">
+    <div>
+      <h1>Find your board.</h1>
+      <p class="lead">A shared name. A shared supply chain. Pick a board to choose your role.</p>
+    </div>
+    <.link navigate={~p"/board/new"} class="button button-primary">New Board
+    <.icon name="arrow" /></.link>
+  </header>
+  <section class="table-panel" aria-labelledby="boards-title">
+    <div class="panel-heading">
+      <h2 id="boards-title">Boards</h2><span class="count-label">{length(@board_collection)} total</span>
+    </div>
+    <div class="table-scroll">
+      <table class="data-table board-table">
+        <caption class="sr-only">Boards and available places</caption>
+        <thead>
+          <tr>
+            <th scope="col">Board name</th><th scope="col">State</th><th scope="col">Places</th><th
+              scope="col"
+              class="actions-cell"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody id="board">
+          <tr :for={board <- @board_collection} id={"board-#{board.id}"}>
+            <th scope="row">{board.name}</th>
+            <td><.status state={board.state} /></td>
+            <td>
+              <span class={["availability", board.full && "is-full"]}>{if board.full,
+                do: "Full",
+                else: "Open"}</span>
+            </td>
+            <td class="actions-cell">
+              <div class="table-actions">
+                <.link navigate={~p"/board/#{board}/player"} class="text-link">Show
+                <.icon name="arrow" /></.link>
+                <button
+                  phx-click="delete"
+                  phx-value-id={board.id}
+                  data-confirm="Are you sure?"
+                  class="delete-button"
+                >Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div :if={@board_collection == []} class="empty-state">
+      <.icon name="box" />
+      <h3>No boards yet.</h3>
+      <p>Create a board and invite your group to play.</p>
+      <.link navigate={~p"/board/new"} class="text-link">Create a board <.icon name="arrow" /></.link>
+    </div>
+  </section>
+</div>

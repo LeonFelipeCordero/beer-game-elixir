@@ -1,17 +1,26 @@
-<div class="h-screen grid place-content-center">
-  <div class="w-full max-w-xs">
-    <%= if @live_action in [:new] do %>
-      <div class="grid place-content-center h-screen">
-        <div class="w-50">
-          <.live_component
-            module={BeerGameWeb.BoardLive.FormComponent}
-            id={:new}
-            title={@page_title}
-            action={@live_action}
-            form={@form}
-          />
-        </div>
+<div class="setup-page">
+  <.setup_steps current={1} create />
+  <div class="welcome-grid">
+    <section class="welcome-story" aria-labelledby="create-title">
+      <h1 id="create-title">Set the board.<br /><span>Start a chain reaction.</span></h1>
+      <p class="lead">
+        Bring your group together. Give your board a name, then take a place in the supply chain.
+      </p>
+    </section>
+    <.live_component
+      :if={@live_action == :new}
+      module={BeerGameWeb.BoardLive.FormComponent}
+      id={:new}
+      title={@page_title}
+      action={@live_action}
+      form={@form}
+    />
+    <div class="chain-panel">
+      <div class="chain-panel-heading">
+        <h2>Three roles. One system.</h2><.icon name="box" />
       </div>
-    <% end %>
+      <.supply_chain />
+      <p>Each player sees their own part.<br />Every decision reaches a little further.</p>
+    </div>
   </div>
 </div>

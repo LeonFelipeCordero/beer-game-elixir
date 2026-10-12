@@ -1,14 +1,10 @@
-<div>
-  <.form
-    for={@form}
-    id="board-form"
-    phx-submit="create_board"
-    class="bg-slate-100 shadow-md rounded px-8 pt-6 pb-8 mb-4"
-  >
-    <div class="mb-4">
-      <label for="name" class="block text-gray-700 text-xl font-bold mb-2">Board name.</label>
+<section class="entry-panel" aria-labelledby="new-board-title">
+  <h2 id="new-board-title">Make room for your group.</h2>
+  <p>Choose a board name you can share with the other players.</p>
+  <.form for={@form} id="board-form" phx-submit="create_board" class="entry-form">
+    <div class="field">
+      <label for="name">Board name</label>
       <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="text"
         name="name"
         id="name"
@@ -16,15 +12,21 @@
         placeholder="e.g. team-AB"
         autofocus
         autocomplete="off"
+        aria-invalid={@form[:name].errors != []}
+        aria-describedby="new-board-name-hint board-name-errors"
       />
-      <p :for={error <- @form[:name].errors} class="invalid-feedback">{translate_error(error)}</p>
+      <p id="new-board-name-hint" class="field-hint">Your group will use this name to join.</p>
+      <div id="board-name-errors">
+        <p :for={error <- @form[:name].errors} class="invalid-feedback">
+          {translate_error(error)}
+        </p>
+      </div>
     </div>
-    <div>
-      <input
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit"
-        value="Create Board"
-      />
-    </div>
+    <button class="button button-primary button-full" type="submit" phx-disable-with="Creating…">Create Board
+    <.icon name="arrow" /></button>
   </.form>
-</div>
+  <div class="entry-secondary">
+    <span>Already have a board?</span>
+    <.link navigate={~p"/"} class="text-link">Join instead <.icon name="arrow" /></.link>
+  </div>
+</section>

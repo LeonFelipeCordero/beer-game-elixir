@@ -1,139 +1,140 @@
-<div class="h-screen">
-  <div class="flex justify-between p-5">
-    <div class="bg-slate-100 shadow-md rounded p-2 mr-5 w-full">
-      <div class="mb-4">
-        <div>
-          <strong class="text-4xl ">
-            Board {@board.name}
-          </strong>
-          <p>
-            Role {@player.role}
-          </p>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            phx-click="abandon_game"
-          >
-            Quit Game
-          </button>
-        </div>
-        <div class="mt-5">
-          <strong>Current status</strong>
-          <table class="border-separate border border-slate-500 table-fixed w-full">
-            <thead>
-              <tr>
-                <th class="border border-slate-600">Stock</th>
-                <th class="border border-slate-600">Last week</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <%= if @player.stock > 10 do %>
-                  <td class="border border-slate-700">{@player.stock}</td>
-                <% else %>
-                  <td class="border border-slate-700 text-red-600 font-bold">{@player.stock}</td>
-                <% end %>
-                <td class="border border-slate-700">{@player.last_order}</td>
-              </tr>
-            </tbody>
-          </table>
-          <form phx-submit="create_order" class="flex flex-col mt-5">
-            <%= if @player.role == "factory" do %>
-              <label for="amount" class="text-gray-700 text-m font-bold mb-2">Weekly production</label>
-            <% end %>
-            <%= if @player.role != "factory" do %>
-              <label for="amount" class="text-gray-700 text-m font-bold mb-2">Weekly order</label>
-            <% end %>
-            <input
-              class="border rounded p-2 text-gray-700"
-              type="number"
-              name="amount"
-              id="amount"
-              value={@player.weekly_orders}
-            />
-            <%= if @player.role != "factory" and @order_time do %>
-              <input
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded mt-2"
-                type="submit"
-                value="order"
-              />
-            <% end %>
-          </form>
-        </div>
+<div class="game-page">
+  <header class="page-heading game-heading">
+    <div>
+      <h1>Board {@board.name}</h1>
+      <p class="role-label">Role {@player.role}</p>
+    </div>
+    <button class="button button-secondary" phx-click="abandon_game">Quit Game</button>
+  </header>
+  <div class="game-chain">
+    <span>Your place in the chain</span>
+    <.supply_chain role={@player.role} />
+  </div>
+  <div class="game-grid">
+    <section class="inventory-panel" aria-labelledby="inventory-title">
+      <div class="inventory-summary">
+        <h2 id="inventory-title">Current status</h2>
+        <dl class="inventory-values">
+          <div>
+            <dt>Stock</dt><dd class={@player.stock <= 10 && "low-stock"}>{@player.stock}</dd>
+          </div>
+          <div>
+            <dt>Last week</dt><dd>{@player.last_order}</dd>
+          </div>
+        </dl>
+        <p :if={@player.stock <= 10} class="stock-warning">Low stock. Keep an eye on demand.</p>
       </div>
-    </div>
-    <div class="bg-slate-100 shadow-md rounded p-2 mr-5 w-full">
-      <strong class="text-xl">
-        Incoming.
-      </strong>
-      <table class="border-separate border border-slate-500 table-fixed w-full">
-        <thead>
-          <tr>
-            <th class="border border-slate-600">#</th>
-            <th class="border border-slate-600">Quantity</th>
-            <th class="border border-slate-600">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= for order <- @receiving_orders do %>
-            <tr>
-              <td class="border border-slate-700">{order.id}</td>
-              <td class="border border-slate-700">{order.amount}</td>
-              <td class="border border-slate-700">{order.state}</td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-slate-100 shadow-md rounded p-2 w-full">
-      <strong class="text-xl">
-        Outgoing
-      </strong>
-      <div class="divide-y-4">
-        <table class="border-separate border border-slate-500 table-fixed w-full">
+      <form phx-submit="create_order" class="order-form">
+        <div class="field">
+          <label for="amount">{if @player.role == "factory",
+            do: "Weekly production",
+            else: "Weekly order"}</label>
+          <p class="field-hint">
+            {if @player.role == "factory",
+              do: "Set how much beer to produce.",
+              else: "Set how much beer to request."}
+          </p>
+          <div class="quantity-input">
+            <input type="number" name="amount" id="amount" value={@player.weekly_orders} /><span aria-hidden="true">units</span>
+          </div>
+        </div>
+        <input
+          :if={@player.role != "factory" and @order_time}
+          class="button button-primary button-full"
+          type="submit"
+          value="Place order"
+          phx-disable-with="Ordering…"
+        />
+        <button
+          :if={@player.role == "factory"}
+          class="button button-primary button-full"
+          type="submit"
+          phx-disable-with="Saving…"
+        >Save production</button>
+        <p :if={@player.role != "factory" and !@order_time} class="waiting-note">
+          Waiting for the next ordering window.
+        </p>
+      </form>
+    </section>
+    <section class="table-panel" aria-labelledby="incoming-title">
+      <div class="panel-heading">
+        <h2 id="incoming-title"><.icon name="incoming" /> Incoming</h2><span class="count-label">{length(
+          @receiving_orders
+        )} orders</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table order-table">
+          <caption class="sr-only">Incoming beer orders</caption>
           <thead>
             <tr>
-              <th class="border border-slate-600">#</th>
-              <th class="border border-slate-600">Quantity</th>
-              <th class="border border-slate-600">Status</th>
-              <th class="border border-slate-600">Action</th>
+              <th scope="col">Order</th><th scope="col" class="number-cell">Quantity</th><th scope="col">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
-            <%= for order <- @sending_orders do %>
-              <tr>
-                <td class="border border-slate-700">{order.id}</td>
-                <td class="border border-slate-700">{order.amount}</td>
-                <td class="border border-slate-700">{order.state}</td>
-                <%= if order.state == "PENDING" do %>
-                  <td class="border border-slate-600">
-                    <%= if @player.stock >= order.amount do %>
-                      <button
-                        class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2
-                          rounded focus:outline-none focus:shadow-outline w-full"
-                        phx-click="deliver_order"
-                        phx-value-order_id={order.id}
-                      >
-                        deliver
-                      </button>
-                    <% else %>
-                      <button
-                        disabled
-                        class="bg-gray-600 text-white py-1 px-2
-                          rounded focus:outline-none focus:shadow-outline w-full"
-                      >
-                        No Stock
-                      </button>
-                    <% end %>
-                  </td>
-                <% end %>
-                <%= if order.state != "PENDING" do %>
-                  <td class="border border-slate-600">N/A</td>
-                <% end %>
-              </tr>
-            <% end %>
+            <tr :for={order <- @receiving_orders} id={"incoming-#{order.id}"}>
+              <th scope="row">#{order.id}</th><td class="number-cell">{order.amount}</td><td>
+                <.status state={order.state} />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-    </div>
+      <div :if={@receiving_orders == []} class="empty-state order-empty">
+        <.icon name="incoming" />
+        <h3>Nothing incoming yet.</h3>
+        <p>Your incoming orders will appear here.</p>
+      </div>
+    </section>
+    <section class="table-panel" aria-labelledby="outgoing-title">
+      <div class="panel-heading">
+        <h2 id="outgoing-title"><.icon name="outgoing" /> Outgoing</h2><span class="count-label">{length(
+          @sending_orders
+        )} orders</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table order-table outgoing-table">
+          <caption class="sr-only">Outgoing beer orders and delivery actions</caption>
+          <thead>
+            <tr>
+              <th scope="col">Order</th><th scope="col" class="number-cell">Quantity</th><th scope="col">
+                Status
+              </th><th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr :for={order <- @sending_orders} id={"outgoing-#{order.id}"}>
+              <th scope="row">#{order.id}</th><td class="number-cell">{order.amount}</td><td>
+                <.status state={order.state} />
+              </td>
+              <td>
+                <%= if order.state == "PENDING" do %>
+                  <button
+                    :if={@player.stock >= order.amount}
+                    class="button button-deliver"
+                    phx-click="deliver_order"
+                    phx-value-order_id={order.id}
+                    phx-disable-with="Sending…"
+                  >Deliver</button>
+                  <button
+                    :if={@player.stock < order.amount}
+                    disabled
+                    class="button button-deliver"
+                  >No Stock</button>
+                <% else %>
+                  <span class="unavailable-action">N/A</span>
+                <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div :if={@sending_orders == []} class="empty-state order-empty">
+        <.icon name="outgoing" />
+        <h3>No orders to send.</h3>
+        <p>When orders arrive, deliver them from your stock.</p>
+      </div>
+    </section>
   </div>
 </div>
