@@ -22,4 +22,4 @@ ENV PHX_SERVER=true
 COPY --from=build --chown=nobody:nogroup /app/_build/prod/rel/beer_game ./
 USER nobody
 EXPOSE 4000
-CMD ["bin/beer_game", "start"]
+CMD ["sh", "-c", "bin/beer_game eval 'BeerGame.Release.migrate()' && exec bin/beer_game start"]
