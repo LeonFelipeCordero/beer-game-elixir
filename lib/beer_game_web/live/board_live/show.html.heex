@@ -73,7 +73,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr :for={order <- @receiving_orders} id={"incoming-#{order.id}"}>
+            <tr :for={order <- @receiving_orders} :key={order.id} id={"incoming-#{order.id}"}>
               <th scope="row">#{order.id}</th><td class="number-cell">{order.amount}</td><td>
                 <.status state={order.state} />
               </td>
@@ -104,7 +104,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr :for={order <- @sending_orders} id={"outgoing-#{order.id}"}>
+            <tr :for={order <- @sending_orders} :key={order.id} id={"outgoing-#{order.id}"}>
               <th scope="row">#{order.id}</th><td class="number-cell">{order.amount}</td><td>
                 <.status state={order.state} />
               </td>
@@ -121,9 +121,11 @@
                     :if={@player.stock < order.amount}
                     disabled
                     class="button button-deliver"
-                  >No Stock</button>
+                  >Not enough stock</button>
                 <% else %>
-                  <span class="unavailable-action">N/A</span>
+                  <span class="unavailable-action">{if order.state == "DELIVERED",
+                    do: "Already delivered",
+                    else: "Unavailable"}</span>
                 <% end %>
               </td>
             </tr>

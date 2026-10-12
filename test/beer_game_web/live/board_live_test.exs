@@ -160,7 +160,7 @@ defmodule BeerGameWeb.BoardLiveTest do
     retailer = hd(Boards.get_board!(board.id).players)
     order = order_fixture(%{amount: 9, type: "CPU_ORDER"})
     player_order_fixture(order, retailer, "SENDING")
-    assert has_element?(game, "button[disabled]", "No Stock")
+    assert has_element?(game, "button[disabled]", "Not enough stock")
     refute has_element?(game, "button[phx-click=deliver_order]")
     assert Orders.get_order!(order.id).state == "PENDING"
     assert Boards.get_player(retailer.id).stock == 8
