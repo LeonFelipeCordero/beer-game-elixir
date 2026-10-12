@@ -28,4 +28,5 @@ services:
     command:
       - sh
       - -c
-      - bin/beer_game eval 'BeerGame.Release.migrate()' && exec bin/beer_game start
+      MIX_ENV: prod
+      DATABASE_URL: ecto://beer_gmae:12345@db/beer_game
