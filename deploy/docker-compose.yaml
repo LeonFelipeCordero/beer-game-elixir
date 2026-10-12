@@ -23,4 +23,6 @@ services:
         condition: service_healthy
     environment:
       MIX_ENV: prod
-      DATABASE_URL: ecto://beer_gmae:12345@db/beer_game
+      DATABASE_URL: postgres://beer_game:12345@db/beer_game
+      # Fixed development key for this local-only application.
+      SECRET_KEY_BASE: "tcegFdURJ0SoW6SG1FUUadBoSuCHdvkORJYUbW7vWqd1IdwccfyvehLvhVGqfmPJ"
