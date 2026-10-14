@@ -10,6 +10,22 @@ import Config
 config :beer_game,
   ecto_repos: [BeerGame.Repo]
 
+config :beer_game, BeerGame.Scheduler,
+  jobs: [
+    ordering_window: [
+      schedule: {:extended, "*/30 * * * * *"},
+      task: {BeerGame.StateRunner, :run, []}
+    ],
+    cpu_orders: [
+      schedule: {:extended, "*/30 * * * * *"},
+      task: {BeerGame.OrderRunner, :run, []}
+    ],
+    factory_production: [
+      schedule: {:extended, "*/30 * * * * *"},
+      task: {BeerGame.FactoryRunner, :run, []}
+    ]
+  ]
+
 # Configures the endpoint
 config :beer_game, BeerGameWeb.Endpoint,
   url: [host: "localhost"],

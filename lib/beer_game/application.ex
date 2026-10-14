@@ -17,11 +17,7 @@ defmodule BeerGame.Application do
       BeerGame.LiveSessionStore,
       # Start the Endpoint (http/https)
       BeerGameWeb.Endpoint,
-      # Start a worker by calling: BeerGame.Worker.start_link(arg)
-      # {BeerGame.Worker, arg}
-      BeerGame.StateRunner,
-      BeerGame.OrderRunner,
-      BeerGame.FactoryRunner
+      BeerGame.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

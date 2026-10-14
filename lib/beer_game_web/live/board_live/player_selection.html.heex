@@ -1,26 +1,51 @@
-<div class="h-screen grid place-content-center">
-  <div class="w-full max-w-xs">
-    <div phx-submit="join_board" class="bg-slate-100 shadow-md rounded px-4 pt-3 pb-4 mb-2">
-      <div class="mb-4">
-        <strong class="text-4xl ">
-          Board {@board.name}
-        </strong>
-        <p class="text-xl font-bold text-cyan-600">Available roles:</p>
-        <%= if @board.full do %>
-          <p class="font-bold">The board is full</p>
-        <% end %>
-        <%= for role <- @available_roles do %>
-          <button
-            type="button"
-            phx-click="select_role"
-            phx-value-role={role}
-            class="block font-bold hover:cursor-pointer hover:text-blue-500"
-          >
-            {role}
-          </button>
-        <% end %>
-      </div>
-      <div></div>
+<div class="setup-page selection-page">
+  <.setup_steps current={2} />
+  <header class="page-heading">
+    <div>
+      <h1>Choose your part.</h1>
+      <p class="lead">
+        Board <strong>{@board.name}</strong>. Same supply chain, a different view from every role.
+      </p>
     </div>
+  </header>
+  <div class="selection-layout">
+    <section class="role-list" aria-label="Available roles">
+      <div :if={@board.full} class="empty-state">
+        <.icon name="box" />
+        <h2>The board is full</h2>
+        <p>All three roles are taken. A role will appear here if a player leaves.</p>
+        <.link navigate={~p"/"} class="text-link">Join another board <.icon name="arrow" /></.link>
+      </div>
+      <button
+        :for={role <- @available_roles}
+        type="button"
+        phx-click="select_role"
+        phx-value-role={role}
+        aria-label={"Play as #{String.capitalize(role)}"}
+        class="role-choice"
+        phx-disable-with="Joining…"
+      >
+        <span class="role-icon"><.icon name={role} /></span>
+        <span class="role-description">
+          <strong>{String.capitalize(role)}</strong>
+          <span>{%{
+            "retailer" => "Meet customer demand. Keep your shelves stocked.",
+            "wholesaler" => "Supply the retailer. Balance orders and inventory.",
+            "factory" => "Produce the beer. Supply the rest of the chain."
+          }[role]}</span>
+        </span>
+        <span class="role-action">Play as {String.capitalize(role)} <.icon name="arrow" /></span>
+      </button>
+    </section>
+    <aside class="selection-note">
+      <h2>A different view.<br />A shared outcome.</h2>
+      <p>
+        Manage your own stock and orders. You won’t see the whole picture—and that’s part of the game.
+      </p>
+      <.supply_chain />
+      <p class="selection-footnote">
+        Only available roles are shown.<br />Each role has one player.
+      </p>
+    </aside>
   </div>
 </div>

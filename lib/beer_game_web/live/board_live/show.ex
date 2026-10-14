@@ -28,7 +28,7 @@ defmodule BeerGameWeb.BoardLive.Show do
   def handle_info({:order_created, player_order}, socket) do
     if player_order.type == "SENDING" and player_order.player_id == socket.assigns.player.id do
       order = Orders.get_order!(player_order.order_id)
-      {:noreply, update(socket, :sending_orders, &[order | &1])}
+      {:noreply, update(socket, :sending_orders, &normalize_orders([order | &1]))}
     else
       {:noreply, socket}
     end
@@ -158,15 +158,18 @@ defmodule BeerGameWeb.BoardLive.Show do
 
   defp recent_orders(player_orders, type) do
     player_orders
-    |> Enum.reverse()
     |> Enum.filter(&(&1.type == type))
-    |> Enum.take(10)
     |> Enum.map(& &1.order)
+    |> normalize_orders()
+  end
+
+  defp normalize_orders(orders) do
+    orders |> Enum.uniq_by(& &1.id) |> Enum.sort_by(& &1.id, :desc) |> Enum.take(10)
   end
 
   defp replace_order(orders, order) do
     if Enum.any?(orders, &(&1.id == order.id)) do
-      [order | Enum.reject(orders, &(&1.id == order.id))] |> Enum.sort_by(& &1.id, :desc)
+      normalize_orders([order | orders])
     else
       orders
     end

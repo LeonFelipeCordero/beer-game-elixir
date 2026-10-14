@@ -57,6 +57,7 @@ defmodule BeerGameWeb do
       import Phoenix.HTML
       import Phoenix.Controller, only: [get_csrf_token: 0]
       import BeerGameWeb.LiveHelpers
+      import BeerGameWeb.GameUI
       import BeerGameWeb.ErrorHelpers
       unquote(verified_routes())
     end
