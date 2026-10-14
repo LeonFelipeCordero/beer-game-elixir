@@ -2,6 +2,8 @@
 
 **Companion document:** [Reading the AI players' decision transcripts](ai-agent-transcript-analysis.md) examines recorded action descriptions, policy choices, and decision summaries behind the results presented here.
 
+**Playing tools:** the [packaged skill and runner scripts](../../skills/beer-game-elixir/README.md) preserve the control policy and explain how to launch another bounded experiment.
+
 ## Executive summary
 
 Two 15-minute sessions produced the same broad outcome: the AI players eventually fulfilled every observed order, but finished with substantially more inventory than they started with. Their behavior was organized around **local service continuity**—deliver what can be delivered, estimate incoming demand, and replenish with a safety margin—not around minimizing inventory across the whole supply chain.
