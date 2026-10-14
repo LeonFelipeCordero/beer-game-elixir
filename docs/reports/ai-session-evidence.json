@@ -1,0 +1,539 @@
+{
+  "scope": "Two completed 900-second sessions on 2026-10-14; recorded policies/actions, not private model reasoning.",
+  "runs": [
+    {
+      "board": 5,
+      "window": {
+        "start": 1791968263.8906631,
+        "end": 1791969163.8906631
+      },
+      "cadence_seconds": 30,
+      "roles": {
+        "retailer": {
+          "initial_stock": 8,
+          "final_stock": 3619,
+          "observed_stock_min": 2,
+          "observed_stock_max": 3619,
+          "fulfilled_orders": 30,
+          "fulfilled_units": 8008,
+          "orders_placed": 30,
+          "ordered_units": 11619,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 2,
+              "smoothing": 0.5,
+              "at_seconds": 0.001
+            }
+          ],
+          "order_amounts": [
+            8,
+            22,
+            19,
+            21,
+            22,
+            27,
+            31,
+            37,
+            44,
+            53,
+            63,
+            74,
+            89,
+            107,
+            126,
+            151,
+            0,
+            402,
+            262,
+            315,
+            377,
+            453,
+            542,
+            649,
+            779,
+            934,
+            1120,
+            1344,
+            1613,
+            1935
+          ],
+          "production_settings": [],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 0.005,
+              "stock": 8,
+              "demand_estimate": 4,
+              "pending_units": 0
+            },
+            "300": {
+              "actual_seconds": 309.082,
+              "stock": 101,
+              "demand_estimate": 31.90234375,
+              "pending_units": 0
+            },
+            "600": {
+              "actual_seconds": 595.622,
+              "stock": 590,
+              "demand_estimate": 186.15224838256836,
+              "pending_units": 0
+            },
+            "900": {
+              "actual_seconds": 900.005,
+              "stock": 3619,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": 3619,
+          "implied_production_units": null
+        },
+        "wholesaler": {
+          "initial_stock": 120,
+          "final_stock": 12192,
+          "observed_stock_min": 21,
+          "observed_stock_max": 21276,
+          "fulfilled_orders": 61,
+          "fulfilled_units": 94541,
+          "orders_placed": 31,
+          "ordered_units": 106613,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 1.35,
+              "smoothing": 0.65,
+              "at_seconds": 0.001
+            }
+          ],
+          "order_amounts": [
+            81,
+            23,
+            92,
+            198,
+            254,
+            236,
+            247,
+            335,
+            357,
+            479,
+            512,
+            688,
+            737,
+            986,
+            1061,
+            1180,
+            1553,
+            1882,
+            2323,
+            2738,
+            3770,
+            1139,
+            3690,
+            6483,
+            9948,
+            7304,
+            0,
+            16457,
+            20638,
+            4941,
+            16281
+          ],
+          "production_settings": [],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 0.006,
+              "stock": 120,
+              "demand_estimate": 60.0,
+              "pending_units": 60
+            },
+            "300": {
+              "actual_seconds": 301.306,
+              "stock": 753,
+              "demand_estimate": 149.1222415646613,
+              "pending_units": 0
+            },
+            "600": {
+              "actual_seconds": 595.587,
+              "stock": 1036,
+              "demand_estimate": 1900.5288514150543,
+              "pending_units": 0
+            },
+            "900": {
+              "actual_seconds": 900.005,
+              "stock": 12192,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": 12192,
+          "implied_production_units": null
+        },
+        "factory": {
+          "initial_stock": 1200,
+          "final_stock": 35402,
+          "observed_stock_min": 77,
+          "observed_stock_max": 194208,
+          "fulfilled_orders": 61,
+          "fulfilled_units": 814028,
+          "orders_placed": 0,
+          "ordered_units": 0,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 1.25,
+              "smoothing": 0.65,
+              "at_seconds": 17.78
+            },
+            {
+              "buffer": 1.6,
+              "smoothing": 0.5,
+              "at_seconds": 243.885
+            }
+          ],
+          "order_amounts": [],
+          "production_settings": [
+            835,
+            878,
+            382,
+            1063,
+            454,
+            1858,
+            2251,
+            1955,
+            1455,
+            2002,
+            3079,
+            1126,
+            2991,
+            2664,
+            6062,
+            3905,
+            6790,
+            3979,
+            8213,
+            5046,
+            11078,
+            7637,
+            6809,
+            10456,
+            4481,
+            9442,
+            8551,
+            23334,
+            15862,
+            13869,
+            21752,
+            9353,
+            27481,
+            37812,
+            35232,
+            27054,
+            59609,
+            45731,
+            28031,
+            70490,
+            35825,
+            80736,
+            113391,
+            106594,
+            59407,
+            199711,
+            134925,
+            79472,
+            226440
+          ],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 17.782,
+              "stock": 1800,
+              "demand_estimate": 667.6,
+              "pending_units": 704
+            },
+            "300": {
+              "actual_seconds": 295.957,
+              "stock": 2215,
+              "demand_estimate": 1299.6447001720665,
+              "pending_units": 3602
+            },
+            "600": {
+              "actual_seconds": 600.667,
+              "stock": 3231,
+              "demand_estimate": 9730.693905980683,
+              "pending_units": 3770
+            },
+            "900": {
+              "actual_seconds": 900.005,
+              "stock": 35402,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": null,
+          "implied_production_units": 848230
+        }
+      }
+    },
+    {
+      "board": 6,
+      "window": {
+        "start": 1791973048.8540094,
+        "end": 1791973948.8540094
+      },
+      "cadence_seconds": 30,
+      "roles": {
+        "retailer": {
+          "initial_stock": 8,
+          "final_stock": 3228,
+          "observed_stock_min": 0,
+          "observed_stock_max": 3228,
+          "fulfilled_orders": 30,
+          "fulfilled_units": 8008,
+          "orders_placed": 30,
+          "ordered_units": 11228,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 1.5,
+              "smoothing": 0.75,
+              "at_seconds": 7.395
+            }
+          ],
+          "order_amounts": [
+            6,
+            23,
+            18,
+            19,
+            21,
+            27,
+            29,
+            36,
+            43,
+            51,
+            61,
+            72,
+            86,
+            103,
+            122,
+            146,
+            177,
+            211,
+            254,
+            304,
+            364,
+            438,
+            524,
+            627,
+            753,
+            903,
+            1082,
+            1299,
+            1558,
+            1871
+          ],
+          "production_settings": [],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 7.397,
+              "stock": 8,
+              "demand_estimate": 4.0,
+              "pending_units": 4
+            },
+            "300": {
+              "actual_seconds": 297.153,
+              "stock": 90,
+              "demand_estimate": 35.10968780517578,
+              "pending_units": 0
+            },
+            "600": {
+              "actual_seconds": 603.553,
+              "stock": 526,
+              "demand_estimate": 246.40785005323596,
+              "pending_units": 260
+            },
+            "900": {
+              "actual_seconds": 900.002,
+              "stock": 3228,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": 3228,
+          "implied_production_units": null
+        },
+        "wholesaler": {
+          "initial_stock": 120,
+          "final_stock": 10415,
+          "observed_stock_min": 23,
+          "observed_stock_max": 18491,
+          "fulfilled_orders": 60,
+          "fulfilled_units": 80288,
+          "orders_placed": 30,
+          "ordered_units": 90583,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 1.4,
+              "smoothing": 0.65,
+              "at_seconds": 6.321
+            }
+          ],
+          "order_amounts": [
+            84,
+            84,
+            141,
+            154,
+            182,
+            269,
+            247,
+            280,
+            372,
+            546,
+            514,
+            580,
+            765,
+            1122,
+            671,
+            1810,
+            1393,
+            1894,
+            2298,
+            2762,
+            3313,
+            3975,
+            4770,
+            5724,
+            8304,
+            7921,
+            0,
+            14264,
+            11170,
+            14974
+          ],
+          "production_settings": [],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 6.322,
+              "stock": 120,
+              "demand_estimate": 60.0,
+              "pending_units": 60
+            },
+            "300": {
+              "actual_seconds": 302.575,
+              "stock": 672,
+              "demand_estimate": 328.1685454171647,
+              "pending_units": 363
+            },
+            "600": {
+              "actual_seconds": 605.203,
+              "stock": 1306,
+              "demand_estimate": 831.1131996574993,
+              "pending_units": 364
+            },
+            "900": {
+              "actual_seconds": 900.002,
+              "stock": 10415,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": 10415,
+          "implied_production_units": null
+        },
+        "factory": {
+          "initial_stock": 1200,
+          "final_stock": 89880,
+          "observed_stock_min": 99,
+          "observed_stock_max": 121665,
+          "fulfilled_orders": 60,
+          "fulfilled_units": 797998,
+          "orders_placed": 0,
+          "ordered_units": 0,
+          "pending_units_at_finish": 0,
+          "policy_choices": [
+            {
+              "buffer": 1.25,
+              "smoothing": 0.65,
+              "at_seconds": 5.13
+            }
+          ],
+          "order_amounts": [],
+          "production_settings": [
+            750,
+            331,
+            847,
+            1465,
+            1623,
+            1585,
+            667,
+            2802,
+            860,
+            3041,
+            2357,
+            4912,
+            2596,
+            6599,
+            4261,
+            3514,
+            7194,
+            6199,
+            2228,
+            7690,
+            12452,
+            10864,
+            7993,
+            22541,
+            13109,
+            8262,
+            25998,
+            26390,
+            24958,
+            10112,
+            50089,
+            31080,
+            25332,
+            56228,
+            15940,
+            57347,
+            49093,
+            108620,
+            63154,
+            128171,
+            67605,
+            156836,
+            144326,
+            163572,
+            180481
+          ],
+          "stock_checkpoints": {
+            "0": {
+              "actual_seconds": 5.131,
+              "stock": 1800,
+              "demand_estimate": 600.0,
+              "pending_units": 600
+            },
+            "300": {
+              "actual_seconds": 299.237,
+              "stock": 1232,
+              "demand_estimate": 1324.618961526329,
+              "pending_units": 0
+            },
+            "600": {
+              "actual_seconds": 594.731,
+              "stock": 13882,
+              "demand_estimate": 8089.211412611859,
+              "pending_units": 0
+            },
+            "900": {
+              "actual_seconds": 900.002,
+              "stock": 89880,
+              "demand_estimate": null,
+              "pending_units": 0
+            }
+          },
+          "stock_balance": null,
+          "implied_production_units": 886678
+        }
+      }
+    }
+  ]
+}
