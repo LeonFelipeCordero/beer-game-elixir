@@ -1,0 +1,242 @@
+{
+  "scope": "Public tool-call labels, parameters, tool results, and agent-authored summaries. No private reasoning transcript.",
+  "runs": [
+    {
+      "board": 5,
+      "window": {
+        "start": 1791968263.8906631,
+        "end": 1791969163.8906631
+      },
+      "players": {
+        "retailer": {
+          "browser_tool_invocations": 18,
+          "player_batch_invocations": 18,
+          "distinct_policy_pairs": [
+            [
+              2.0,
+              0.5
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Continuing retailer service without changing policy",
+              "invoked_at_epoch_ms": 1791968727332,
+              "seconds_from_shared_start": 463.441,
+              "buffer": 2.0,
+              "smoothing": 0.5
+            },
+            {
+              "label": "Maintaining retailer stock as demand grows",
+              "invoked_at_epoch_ms": 1791968777524,
+              "seconds_from_shared_start": 513.633,
+              "buffer": 2.0,
+              "smoothing": 0.5
+            },
+            {
+              "label": "Serving retailer demand in the final minutes",
+              "invoked_at_epoch_ms": 1791968930687,
+              "seconds_from_shared_start": 666.796,
+              "buffer": 2.0,
+              "smoothing": 0.5
+            }
+          ],
+          "nonempty_final_response": false,
+          "streamed_public_text_matches_final": false,
+          "continuous_in_play_narrative_present": false
+        },
+        "wholesaler": {
+          "browser_tool_invocations": 19,
+          "player_batch_invocations": 18,
+          "distinct_policy_pairs": [
+            [
+              1.35,
+              0.65
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Continue replenishment and oldest-order service",
+              "invoked_at_epoch_ms": 1791968522325,
+              "seconds_from_shared_start": 258.434,
+              "buffer": 1.35,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Maintain supply against rising visible demand",
+              "invoked_at_epoch_ms": 1791968623117,
+              "seconds_from_shared_start": 359.226,
+              "buffer": 1.35,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Process visible demand without duplicate ordering",
+              "invoked_at_epoch_ms": 1791968978322,
+              "seconds_from_shared_start": 714.431,
+              "buffer": 1.35,
+              "smoothing": 0.65
+            }
+          ],
+          "nonempty_final_response": true,
+          "streamed_public_text_matches_final": true,
+          "continuous_in_play_narrative_present": false
+        },
+        "factory": {
+          "browser_tool_invocations": 18,
+          "player_batch_invocations": 17,
+          "distinct_policy_pairs": [
+            [
+              1.25,
+              0.65
+            ],
+            [
+              1.6,
+              0.5
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Serve factory demand and inspect current inventory",
+              "invoked_at_epoch_ms": 1791968451367,
+              "seconds_from_shared_start": 187.476,
+              "buffer": 1.25,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Increase reserve for observed factory stock shortage",
+              "invoked_at_epoch_ms": 1791968507701,
+              "seconds_from_shared_start": 243.81,
+              "buffer": 1.6,
+              "smoothing": 0.5
+            },
+            {
+              "label": "Continue successful reserve policy at factory",
+              "invoked_at_epoch_ms": 1791968775294,
+              "seconds_from_shared_start": 511.403,
+              "buffer": 1.6,
+              "smoothing": 0.5
+            }
+          ],
+          "nonempty_final_response": true,
+          "streamed_public_text_matches_final": true,
+          "continuous_in_play_narrative_present": false
+        }
+      }
+    },
+    {
+      "board": 6,
+      "window": {
+        "start": 1791973048.8540094,
+        "end": 1791973948.8540094
+      },
+      "players": {
+        "retailer": {
+          "browser_tool_invocations": 19,
+          "player_batch_invocations": 18,
+          "distinct_policy_pairs": [
+            [
+              1.5,
+              0.75
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Maintain the retailer inventory buffer",
+              "invoked_at_epoch_ms": 1791973158243,
+              "seconds_from_shared_start": 109.389,
+              "buffer": 1.5,
+              "smoothing": 0.75
+            },
+            {
+              "label": "Respond to rising retailer demand",
+              "invoked_at_epoch_ms": 1791973464458,
+              "seconds_from_shared_start": 415.604,
+              "buffer": 1.5,
+              "smoothing": 0.75
+            }
+          ],
+          "nonempty_final_response": false,
+          "streamed_public_text_matches_final": false,
+          "continuous_in_play_narrative_present": false
+        },
+        "wholesaler": {
+          "browser_tool_invocations": 19,
+          "player_batch_invocations": 18,
+          "distinct_policy_pairs": [
+            [
+              1.4,
+              0.65
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Serve demand with a moderate reserve",
+              "invoked_at_epoch_ms": 1791973055100,
+              "seconds_from_shared_start": 6.246,
+              "buffer": 1.4,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Serve pending demand as supply arrives",
+              "invoked_at_epoch_ms": 1791973360402,
+              "seconds_from_shared_start": 311.548,
+              "buffer": 1.4,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Continue wholesaler inventory balancing",
+              "invoked_at_epoch_ms": 1791973719862,
+              "seconds_from_shared_start": 671.008,
+              "buffer": 1.4,
+              "smoothing": 0.65
+            }
+          ],
+          "nonempty_final_response": false,
+          "streamed_public_text_matches_final": false,
+          "continuous_in_play_narrative_present": false
+        },
+        "factory": {
+          "browser_tool_invocations": 19,
+          "player_batch_invocations": 18,
+          "distinct_policy_pairs": [
+            [
+              1.25,
+              0.65
+            ]
+          ],
+          "selected_public_action_labels": [
+            {
+              "label": "Adjust factory production to observed demand",
+              "invoked_at_epoch_ms": 1791973311865,
+              "seconds_from_shared_start": 263.011,
+              "buffer": 1.25,
+              "smoothing": 0.65
+            },
+            {
+              "label": "Continue factory deliveries with demand smoothing",
+              "invoked_at_epoch_ms": 1791973722048,
+              "seconds_from_shared_start": 673.194,
+              "buffer": 1.25,
+              "smoothing": 0.65
+            }
+          ],
+          "nonempty_final_response": true,
+          "streamed_public_text_matches_final": true,
+          "continuous_in_play_narrative_present": false
+        }
+      }
+    }
+  ],
+  "factory_shortage_evidence": {
+    "board": 5,
+    "observed_at_seconds": 232.549,
+    "stock": 846,
+    "pending_order_id": 962,
+    "pending_order_units": 2146,
+    "deliver_enabled": false,
+    "subsequent_change_label": "Increase reserve for observed factory stock shortage",
+    "old_buffer": 1.25,
+    "new_buffer": 1.6,
+    "old_smoothing": 0.65,
+    "new_smoothing": 0.5
+  }
+}
